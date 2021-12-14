@@ -1,0 +1,242 @@
+Assignment - 03-12-2021
+
+#1. In the given Singleton program, make necessary changes, so that upto 3 new instances can be created, and for subsequent requests/calls return any one of the existing 3 instances, 
+a) randomly
+b) sequence - round robin
+ 
+#2. can a static method be overridden? provide source code example
+ 
+#3. Can a method with throws in derived class override a method without throws in Base class?
+ 
+#4. Create abstract class Employee, derived classes PermanentEmployee, COntractEmployee. create an array (use collections also) of type Employee which can store objects of type PermanentEmployee or COntractEmployee. Iterate thru array(or any Collection) and display details.
+
+
+------
+1. package fsdtraining;
+
+public class SingletonSn {
+	
+	public static SingletonSn sn= null;
+	
+	static int count = 0;
+	static int insValue=0;
+	
+	private SingletonSn ()
+	{
+		
+	}
+
+	public static SingletonSn getSingletonInst()
+	{
+		if(sn==null || (count<3))
+		{
+			sn = new SingletonSn();
+			count++;
+		}
+		insValue++;
+		if(count >=3)
+		{
+			insValue = insValue%count;
+		}
+		
+		return sn;
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		SingletonSn s1 = SingletonSn.getSingletonInst();
+		System.out.println("Instance : " + count);
+		SingletonSn s2 = SingletonSn.getSingletonInst();
+		System.out.println("Instance : " + count);
+		SingletonSn s3 = SingletonSn.getSingletonInst();
+		System.out.println("Instance : " + count);
+		SingletonSn s4 = SingletonSn.getSingletonInst();
+		System.out.println("Instance : " + count + " " + "InsValue : " + insValue);
+		SingletonSn s5 = SingletonSn.getSingletonInst();
+		System.out.println("Instance : " + count + " " + "InsValue : " + insValue);
+		
+	}
+	
+}
+
+
+2. No
+
+package fsdtraining;
+
+class Sample1{
+	
+	static void method1()
+	{
+		System.out.println("Sample1 from Base Class");
+	}
+	
+}
+
+
+public class Sample2 extends Sample1{
+	
+	@Override
+	static void Sample1()
+	{
+		System.out.println("Sample1 from Base Class");
+	}
+	
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+
+3. NO
+
+package fsdtraining;
+
+import java.io.FileNotFoundException;
+
+
+class NoThrowsMethodClass{
+	
+	public void Sample1(){
+		
+		System.out.println("Sample without throws");
+		
+	}
+	
+}
+
+
+public class ThrowsEg extends  NoThrowsMethodClass{
+	
+	@Override
+	public void Sample1() throws FileNotFoundException
+	{
+		System.out.println("Sample with throws");
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
+
+
+
+4. package fsdtraining;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.TreeSet;
+
+abstract class Employee1{
+	
+	abstract void showEmp();
+	
+}
+
+
+class PermanentEmployee1 extends Employee1{
+	
+	private int sal;
+	
+	private String type;
+
+	public int getSal() {
+		return sal;
+	}
+
+	public void setSal(int sal) {
+		this.sal = sal;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	void showEmp() {
+		// TODO Auto-generated method stub
+		System.out.println(sal + " " + type);
+	}
+
+	@Override
+	public String toString() {
+		return "PermanentEmployee [sal=" + sal + ", type=" + type + "]";
+	}
+	
+	
+	
+}
+
+
+class ContractEmployee1 extends Employee1{
+
+	private int sal;
+	
+	private String type;
+	
+	public int getSal() {
+		return sal;
+	}
+
+	public void setSal(int sal) {
+		this.sal = sal;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	void showEmp() {
+		System.out.println(sal + " " + type);
+		
+	}
+
+	@Override
+	public String toString() {
+		return "ContractEmployee [sal=" + sal + ", type=" + type + "]";
+	}
+	
+	
+}
+
+public class SampleClass {
+
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		ContractEmployee1 cE = new ContractEmployee1();
+		cE.setSalary(8000);
+		cE.setType("Contract");
+		
+		PermanentEmployee1 pE = new PermanentEmployee1();
+		pE.setSalary(10000);
+		pE.setType("Permanent");
+		
+		ArrayList<Employee> emp1 = new ArrayList<Employee>();
+		emp1.add(cE);
+		emp1.add(pE);
+		
+		for(int i = 0;i<emp1.size();i++)
+		{
+			System.out.println(emp1.get(i));
+		}
+		
+	}
+
+}
